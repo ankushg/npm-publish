@@ -31,7 +31,7 @@ kotlin {
 }
 
 tasks {
-  named("compileProductionLibraryKotlinJs", KotlinJsCompile::class.java) {
+  withType<KotlinJsCompile>() {
     kotlinOptions {
 //      sourceMap = true
 //      sourceMapEmbedSources = "always"

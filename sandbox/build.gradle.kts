@@ -42,6 +42,7 @@ tasks {
 
 npmPublishing {
   organization = "$group"
+  experimentalUmbrellaMode = true
   publications {
     named("js") {
       moduleName = "sandbox"

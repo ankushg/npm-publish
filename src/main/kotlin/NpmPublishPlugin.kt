@@ -147,15 +147,21 @@ class NpmPublishPlugin : Plugin<Project> {
           }
         packTask.dependsOn(npmPackTask)
         packTask.enabled = true
-        repositories.map { repo ->
-          val upperRepoName = GUtil.toCamelCase(repo.name)
-          val publishTaskName = "publish${upperName}NpmPublicationTo$upperRepoName"
-          tasks.findByName(publishTaskName)
-            ?: tasks.create(publishTaskName, NpmPublishTask::class.java, pub, repo).also { task ->
-              task.onlyIf { assemblePackageTask.didWork }
-              task.dependsOn(assemblePackageTask)
-              publishTask.dependsOn(task)
-            }
+
+        if (rootProject.npmPublishing.experimentalUmbrellaMode && this != rootProject) {
+          // no publish tasks for non-root projects in umbrella mode!
+          emptyList()
+        } else {
+          repositories.map { repo ->
+            val upperRepoName = GUtil.toCamelCase(repo.name)
+            val publishTaskName = "publish${upperName}NpmPublicationTo$upperRepoName"
+            tasks.findByName(publishTaskName)
+              ?: tasks.create(publishTaskName, NpmPublishTask::class.java, pub, repo).also { task ->
+                task.onlyIf { assemblePackageTask.didWork }
+                task.dependsOn(assemblePackageTask)
+                publishTask.dependsOn(task)
+              }
+          }
         }
       }
       if (pubTasks.isNotEmpty()) {

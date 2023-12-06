@@ -31,7 +31,7 @@ kotlin {
 }
 
 tasks {
-  named("compileProductionLibraryKotlinJs", KotlinJsCompile::class.java) {
+  withType<KotlinJsCompile>() {
     kotlinOptions {
 //      sourceMap = true
 //      sourceMapEmbedSources = "always"
@@ -42,6 +42,7 @@ tasks {
 
 npmPublishing {
   organization = "$group"
+  experimentalUmbrellaMode = true
   publications {
     named("js") {
       moduleName = "sandbox"

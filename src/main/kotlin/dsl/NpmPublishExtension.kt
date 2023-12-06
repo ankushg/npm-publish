@@ -50,6 +50,18 @@ open class NpmPublishExtension(private val project: Project) : NpmPublishExtensi
   var shrinkwrapBundledDependencies: Boolean by project.propertyDelegate(default = true) { it.notFalse() }
 
   /**
+   * Specifies if experimental umbrella publishing should be used.
+   *
+   * Umbrella publishing publishes all dependendencies of this project as independent artifacts, rather than as one
+   * combined artifact.
+   *
+   * Should be combined with IR and `-xir-per-module` compiler flag.
+   *
+   * Defaults to `npm.publish.experimentalUmbrellaMode` project property if set, or `false` otherwise.
+   */
+  var experimentalUmbrellaMode: Boolean by project.propertyDelegate(default = false) { it.notFalse() }
+
+  /**
    * Specifies if a dry-run should be added to the npm command arguments.
    * Dry run does all the normal run des except actual file uploading.
    * Defaults to `npm.publish.dry` project property if set or `false` otherwise.
